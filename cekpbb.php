@@ -18,7 +18,7 @@ if (!isset($_GET['input'])) {
 if (!isset($_GET['tahun'])) {
     $tahun = '2015';
 } else {
-    $tahun = trim(intval($_GET['tahun']));
+    $tahun = trim(numonly($_GET['tahun']));
 }
 
 
@@ -89,7 +89,13 @@ if ( $ch = curl_init() )
         $html = curl_exec($ch);
 
         if (is_numeric($input)) { 
-            echo $html;
+            $pattern = "/<div[^>]*>(.*)<\/div>/s";
+
+            // If a match is found, store the results in $match
+            if (preg_match($pattern, $html, $match)) {
+                // Show the captured value
+                echo trim($match[1]);
+            }  
         } else {
             $pattern = "/<table[^>]*>(.*)<\/table>/s";
 
