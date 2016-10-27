@@ -88,13 +88,18 @@ if ( $ch = curl_init() )
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData) );
         $html = curl_exec($ch);
 
-		$pattern = "/<table[^>]*>(.*)<\/table>/s";
+        if (is_numeric($input)) { 
+            echo $html;
+        } else {
+            $pattern = "/<table[^>]*>(.*)<\/table>/s";
 
-		// If a match is found, store the results in $match
-		if (preg_match($pattern, $html, $match)) {
-		    // Show the captured value
-		    echo '<table class="table table-condensed table-striped table-bordered">'.$match[1].'</table>';
-		}
+            // If a match is found, store the results in $match
+            if (preg_match($pattern, $html, $match)) {
+                // Show the captured value
+                echo '<table class="table table-condensed table-striped table-bordered">'.$match[1].'</table>';
+            }   
+        }
+
     }
      curl_close($ch);
 }
