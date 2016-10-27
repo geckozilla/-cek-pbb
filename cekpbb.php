@@ -1,13 +1,10 @@
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+<?php
 
 ## usage
-## access the file   cekpbb.php?nama=mukidi$tahun=2015 
+## access the file   cekpbb.php?nama=mukidi&tahun=2015 
 
-<?php
 if (!isset($_GET['nama'])) {
-	$nama = 'MUKIDI BIN';
+	$nama = 'MUKIDI BIN S';
 } else {
 	$nama = strtoupper($_GET['nama']);
 }
