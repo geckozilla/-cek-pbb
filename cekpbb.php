@@ -12,7 +12,7 @@ if (!isset($_GET['input'])) {
     $input = 'MUKIDI BIN S';
 } else {
     //$input = trim(strtoupper($_GET['input']));
-    $input = trim(strtoupper(alphanumericAndSpace(unsef_url($bb))));
+    $input = trim(strtoupper(alphanumericAndSpace(unsef_url($_GET['input']))));
 }
 
 if (!isset($_GET['tahun'])) {
