@@ -1,25 +1,64 @@
 <?php
 
-## usage
-## access the file   cekpbb.php?nama=mukidi&tahun=2015 
+#usage = xxxx.php?input=mukidi&tahun=2015
 
-if (!isset($_GET['nama'])) {
-	$nama = 'MUKIDI BIN S';
+# biasanya yg diubah ini
+$loginURL = "http://pbb-trenggalek.ddns.net/PBB/ote.php";
+
+
+//1. get nilai 
+
+if (!isset($_GET['input'])) {
+    $input = 'MUKIDI BIN S';
 } else {
-	$nama = strtoupper($_GET['nama']);
+    //$input = trim(strtoupper($_GET['input']));
+    $input = trim(strtoupper(alphanumericAndSpace(unsef_url($bb))));
 }
 
 if (!isset($_GET['tahun'])) {
-	$tahun = '2015';
+    $tahun = '2015';
 } else {
-	$tahun = $_GET['tahun'];
+    $tahun = trim(intval($_GET['tahun']));
 }
 
 
-$loginData = array('nama'=>$nama, 'tahun'=>$tahun);
-$postData = array('nama'=>$nama, 'tahun'=>$tahun);
-$loginURL = "http://pbb-trenggalek.ddns.net/PBB/ote.php";
-$addURL = "http://pbb-trenggalek.ddns.net/PBB/p_search.php";
+//2. tentukan nama atau nop
+if (is_numeric($input)) {
+    # nomor OP
+    if (strlen($input) <> 18) {
+      $r = '<p>Maaf, SPPT yang Anda masukkan kurang benar.</p>';
+    } else {
+
+      $addURL = "http://pbb-trenggalek.ddns.net/PBB/p_objek.php";
+
+      $postData = array(
+        'prop' => urlencode(substr($input, 0, 2)), 
+        'dati' => urlencode(substr($input, 2, 2)), 
+        'kec' => urlencode(substr($input, 4, 3)), 
+        'kel' => urlencode(substr($input, 7, 3)), 
+        'blok' => urlencode(substr($input, 10, 3)), 
+        'urut' => urlencode(substr($input, 13, 4)), 
+        'jnsop' => urlencode(substr($input, -1, 1))
+      );
+    }
+} else {
+    
+    $addURL = "http://pbb-trenggalek.ddns.net/PBB/p_search.php";
+
+    # nama
+    $postData = array(
+      'nama' => urldecode($input), 
+      'tahun' => urldecode($tahun)
+    );
+}
+
+
+## usage
+## access the file   cekpbb.php?nama=mukidi&tahun=2015 
+
+
+$loginData = array('nama'=>'sapi', 'tahun'=>'2015');
+
 
 $curl_options = array(
     CURLOPT_RETURNTRANSFER => true,     /* return web page */
@@ -58,4 +97,19 @@ if ( $ch = curl_init() )
 		}
     }
      curl_close($ch);
+}
+
+
+
+function numonly($string) {
+    return preg_replace('/[^0-9]/', '', $string);
+}
+function alphanumericAndSpace($string) {
+    return preg_replace('/[^a-zA-Z0-9\s]/', '', $string);
+}
+function unsef_url($string) {
+    $string = str_replace('_', ' ', $string);
+    $string = str_replace('+', ' ', $string);
+    $string = str_replace('-', ' ', $string);
+    return strtolower($string);
 }
